@@ -1062,7 +1062,6 @@
             const goal = parseInt(document.getElementById('settingsGoalInput').value);
             if (goal && goal > 0) {
                 calorieGoal = goal;
-                document.getElementById('goalInput').value = calorieGoal;
                 saveData();
                 updateDisplay();
                 alert('Goal saved!');
