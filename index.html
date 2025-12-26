@@ -890,7 +890,10 @@
             const saved = localStorage.getItem('weddingFitnessData');
             if (saved) {
                 const data = JSON.parse(saved);
-                const today = new Date().toDateString();
+                const now = new Date();
+                const today = now.getFullYear() + '-' + 
+                             String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                             String(now.getDate()).padStart(2, '0');
                 
                 if (data.date === today) {
                     todaysMeals = data.meals || [];
@@ -952,7 +955,12 @@
         // Save data to localStorage
         function saveData() {
             const data = {
-                date: new Date().toDateString(),
+                date: (function() {
+                    const now = new Date();
+                    return now.getFullYear() + '-' + 
+                           String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(now.getDate()).padStart(2, '0');
+                })(),
                 meals: todaysMeals,
                 activities: todaysActivities,
                 goal: calorieGoal,
@@ -1490,7 +1498,9 @@
             
             // Calculate weight change from 7 days ago
             if (weightHistory.length >= 2) {
-                const sevenDaysAgoDate = new Date(today);
+                const sevenDaysAgoDateStr = sevenDaysAgoDate.getFullYear() + '-' + 
+                            String(sevenDaysAgoDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                            String(sevenDaysAgoDate.getDate()).padStart(2, '0');
                 sevenDaysAgoDate.setDate(today.getDate() - 7);
                 const sevenDaysAgoDateStr = sevenDaysAgoDate.toISOString().split('T')[0];
                 
