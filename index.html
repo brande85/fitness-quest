@@ -1498,11 +1498,11 @@
             
             // Calculate weight change from 7 days ago
             if (weightHistory.length >= 2) {
+                const sevenDaysAgoDate = new Date(today);
+                sevenDaysAgoDate.setDate(today.getDate() - 7);
                 const sevenDaysAgoDateStr = sevenDaysAgoDate.getFullYear() + '-' + 
                             String(sevenDaysAgoDate.getMonth() + 1).padStart(2, '0') + '-' + 
                             String(sevenDaysAgoDate.getDate()).padStart(2, '0');
-                sevenDaysAgoDate.setDate(today.getDate() - 7);
-                const sevenDaysAgoDateStr = sevenDaysAgoDate.toISOString().split('T')[0];
                 
                 // Find weight closest to 7 days ago
                 let oldWeight = null;
@@ -1557,8 +1557,11 @@
             }
             
             const labels = last7Days.map(entry => {
-                const date = new Date(entry.date);
-                return (date.getMonth() + 1) + '/' + date.getDate();
+                // Parse the date string manually to avoid timezone issues
+                const parts = entry.date.split('-');
+                const month = parts[1];
+                const day = parts[2];
+                return month + '/' + day;
             });
             const weights = last7Days.map(entry => entry.weight);
             
