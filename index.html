@@ -1728,8 +1728,11 @@
             // Prepare chart data - show last 30 entries max
             const chartData = weightHistory.slice(-30);
             const labels = chartData.map(entry => {
-                const date = new Date(entry.date);
-                return (date.getMonth() + 1) + '/' + date.getDate();
+                // Parse the date string manually to avoid timezone issues
+                const parts = entry.date.split('-');
+                const month = parts[1];
+                const day = parts[2];
+                return month + '/' + day;
             });
             const weights = chartData.map(entry => entry.weight);
             
