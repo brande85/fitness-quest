@@ -1186,11 +1186,13 @@
             if (dates.length === 0) return 0;
             
             let streak = 0;
-            const today = new Date().toISOString().split('T')[0];
-            let checkDate = new Date(today);
+            const now = new Date();
+            let checkDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             
             while (true) {
-                const dateStr = checkDate.toISOString().split('T')[0];
+                const dateStr = checkDate.getFullYear() + '-' + 
+                               String(checkDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                               String(checkDate.getDate()).padStart(2, '0');
                 if (dailyLogs[dateStr]) {
                     streak++;
                     checkDate.setDate(checkDate.getDate() - 1);
@@ -1203,7 +1205,10 @@
         }
         
         function markTodayAsLogged() {
-            const today = new Date().toISOString().split('T')[0];
+            const now = new Date();
+            const today = now.getFullYear() + '-' + 
+                         String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                         String(now.getDate()).padStart(2, '0');
             if (todaysMeals.length > 0 || todaysActivities.length > 0 || weightHistory.some(w => w.date === today)) {
                 dailyLogs[today] = true;
                 saveData();
@@ -1628,7 +1633,11 @@
             const weight = parseFloat(document.getElementById('weightInput').value);
             if (!weight || weight <= 0) return;
             
-            const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+            // Use local date instead of UTC
+            const now = new Date();
+            const today = now.getFullYear() + '-' + 
+                         String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                         String(now.getDate()).padStart(2, '0'); // YYYY-MM-DD format
             
             // Check if weight already logged today
             const existingIndex = weightHistory.findIndex(entry => entry.date === today);
